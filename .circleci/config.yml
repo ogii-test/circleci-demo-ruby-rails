@@ -55,6 +55,6 @@ workflows:
   build_and_test:
     jobs:
       - test
-      - test
+      - test:
           image-type: circleci/postgres:9.5-alpine-ram
       
