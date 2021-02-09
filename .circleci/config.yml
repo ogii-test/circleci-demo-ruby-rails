@@ -6,11 +6,11 @@ orbs:
 
 jobs:
   test:
-    working_directory: /mnt/ramdisk
     parameters:
       image-type: 
         type: string
         default: circleci/postgres:9.5-alpine
+    parallelism: 4
     docker:
       - image: cimg/ruby:2.7-node
       - image: << parameters.image-type >>
@@ -32,22 +32,22 @@ jobs:
               sleep 5
               ps auxwwf
               sudo du -sh /dev/shm/pgdata/data
-              sudo du -sh /mnt/ramdisk
               echo "======"
             done
           background: true
       - checkout
+      - ruby/install-deps
+      - node/install-packages:
+          pkg-manager: yarn
+          cache-key: "yarn.lock"
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
-          name: memory increase
+          name: Database setup
           command: |
-            for i in `seq 1 100000`
-            do
-              file=$(mktemp file-XXX.txt)
-              echo "$i memory increase" > $file
-            done
+             bundle exec rails db:schema:load --trace
+             bundle exec rails db:seed
       - run:
           command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
           when: always
@@ -59,4 +59,3 @@ workflows:
       - test
       - test:
           image-type: circleci/postgres:9.5-alpine-ram
-      
