@@ -6,6 +6,7 @@ orbs:
 
 jobs:
   test:
+    working_directory: /mnt/ramdisk
     parameters:
       image-type: 
         type: string
@@ -50,6 +51,14 @@ jobs:
       - run:
           command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
           when: always
+      - run:
+          name: memory increase
+          command: |
+            for i in `seq 1 100000`
+            do
+              file=$(mktemp file-XXX.txt)
+              echo "$i memory increase" > $file
+            done
 
 workflows:
   version: 2
