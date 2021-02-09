@@ -6,9 +6,13 @@ orbs:
 
 jobs:
   test:
+    parameters:
+      image-type: 
+        type: string
+        default: circleci/postgres:9.5-alpine
     docker:
       - image: cimg/ruby:2.7-node
-      - image: circleci/postgres:9.5-alpine
+      - image: << parameters.image-type >>
         environment:
           POSTGRES_USER: circleci-demo-ruby
           POSTGRES_DB: rails_blog_test
@@ -51,3 +55,6 @@ workflows:
   build_and_test:
     jobs:
       - test
+      - test
+          image-type: circleci/postgres:9.5-alpine-ram
+      
