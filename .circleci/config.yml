@@ -32,21 +32,14 @@ jobs:
               sleep 5
               ps auxwwf
               sudo du -sh /dev/shm/pgdata/data
+              sudo du -sh /mnt/ramdisk
               echo "======"
             done
           background: true
       - checkout
-      - ruby/install-deps
-      - node/install-packages:
-          pkg-manager: yarn
-          cache-key: "yarn.lock"
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
-      - run:
-          name: Database setup
-          command: |
-             bundle exec rails db:schema:load --trace
       - run:
           name: memory increase
           command: |
