@@ -21,6 +21,14 @@ jobs:
       PGPASSWORD: ""
       RAILS_ENV: test
     steps:
+      - run:
+          command: |
+            while true; do
+              sleep 5
+              ps auxwwf
+              echo "======"
+            done
+          background: true
       - checkout
       - ruby/install-deps
       - node/install-packages:
@@ -37,14 +45,6 @@ jobs:
       - run:
           command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
           when: always
-      - run:
-          command: |
-            while true; do
-              sleep 5
-              ps auxwwf
-              echo "======"
-            done
-          background: true
 
 workflows:
   version: 2
