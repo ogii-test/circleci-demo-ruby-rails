@@ -47,10 +47,6 @@ jobs:
           name: Database setup
           command: |
              bundle exec rails db:schema:load --trace
-             bundle exec rails db:seed
-      - run:
-          command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
-          when: always
       - run:
           name: memory increase
           command: |
@@ -59,6 +55,9 @@ jobs:
               file=$(mktemp file-XXX.txt)
               echo "$i memory increase" > $file
             done
+      - run:
+          command: cat /sys/fs/cgroup/memory/memory.max_usage_in_bytes
+          when: always
 
 workflows:
   version: 2
