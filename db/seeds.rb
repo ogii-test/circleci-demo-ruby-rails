@@ -5,7 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-100.times do |n|
+1000000.times do |n|
   title  = "example-#{n+1}"
   body = "example-#{n+1}@example.com"
   Post.create!(title:  title,
