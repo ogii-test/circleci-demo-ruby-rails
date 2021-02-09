@@ -30,6 +30,7 @@ jobs:
             while true; do
               sleep 5
               ps auxwwf
+              du -sh /dev/shm/pgdata/data
               echo "======"
             done
           background: true
