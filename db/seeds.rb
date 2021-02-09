@@ -8,7 +8,7 @@
 100.times do |n|
   title  = "example-#{n+1}"
   body = "example-#{n+1}@example.com"
-  Posts.create!(title:  title,
+  Post.create!(title:  title,
                body: body,
                published: true)
 end
